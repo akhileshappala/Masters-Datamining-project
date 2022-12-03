@@ -4,10 +4,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.svm import SVR
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -26,8 +28,8 @@ def run_all_regressors(X_train, y_train, X_test, y_test):
         "RandomForestRegressor" : RandomForestRegressor(),
         "GradientBoostingRegressor" : GradientBoostingRegressor(),
         "DecisionTreeRegressor" : DecisionTreeRegressor(),
-        "ExtraTreesRegressor": ExtraTreesRegressor()
-
+        "ExtraTreesRegressor": ExtraTreesRegressor(),
+        "SVR": SVR()
     }
 
     for type in regressor_list.keys():
@@ -63,7 +65,8 @@ def run_all_classifiers(X_train, y_train, X_test, y_test):
         "RandomForestClassifier": RandomForestClassifier(),
         "GradientBoostingClassifier": GradientBoostingClassifier(),
         "DecisionTreeClassifier": DecisionTreeClassifier(),
-        "ExtraTreesClassifier": ExtraTreesClassifier()
+        "ExtraTreesClassifier": ExtraTreesClassifier(),
+        "SVC": SVC()
     }
 
     for type in classifier_list.keys():
@@ -85,7 +88,7 @@ def run_classifier(X_train, y_train, X_test, y_test, classifier_type):
 # HELPER
 
 def reduce_cause_labels(df):
-    reduced_labels = ['Equipment Use', 'Children', 'Smoking', 'Campfire', 'Railroad', 'Structure', 'Powerline', 'Fireworks']
+    reduced_labels = ['Children', 'Smoking', 'Campfire', 'Railroad', 'Structure', 'Powerline', 'Fireworks']
     df = df.loc[df['stat_cause_descr'] != 'Missing/Undefined']
     df['stat_cause_descr'] = df['stat_cause_descr'].apply(lambda x: 'Other' if (x in reduced_labels) else x)
     return df
