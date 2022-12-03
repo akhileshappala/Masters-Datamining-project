@@ -18,6 +18,8 @@ import pandas_profiling
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+###################
+# RUN EVALUATION
 
 def run_all_regressors(X_train, y_train, X_test, y_test):
     regressor_list = {
@@ -43,9 +45,9 @@ def run_regressor(X_train, y_train, X_test, y_test, regressor_type):
     predictions = model.predict(X_test)
 
     mean_absolute_error_value = mean_absolute_error(y_test, predictions)
-    print('Mean Absolute Error:', mean_absolute_error_value)
+    print('Mean Absolute Error: ', mean_absolute_error_value)
     r2_score_value = r2_score(y_test, predictions)
-    print('R Squared:', r2_score_value)
+    print('R Squared: ', r2_score_value)
     adj_R2_value = adj_R2(r2_score_value, X_test.size, len(X_test.columns))
     print('Adjusted R Squared: ', adj_R2_value)
 
@@ -55,7 +57,35 @@ def adj_R2(R2, n, p):
     r2 = 1-(1-R2)*(n-1)/(n-p-1)
     return r2
 
+
 def run_all_classifiers(X_train, y_train, X_test, y_test):
     classifier_list = {
-        
+        "RandomForestClassifier": RandomForestClassifier(),
+        "GradientBoostingClassifier": GradientBoostingClassifier(),
+        "DecisionTreeClassifier": DecisionTreeClassifier(),
+        "ExtraTreesClassifier": ExtraTreesClassifier()
     }
+
+    for type in classifier_list.keys():
+        print(f"Running {type}")
+        run_classifier(X_train, y_train, X_test, y_test, classifier_list[type])
+
+def run_classifier(X_train, y_train, X_test, y_test, classifier_type):
+    model = classifier_type
+    model.fit(X_train, y_train)
+
+    predictions = model.predict(X_test)
+    print(predictions[:5])
+    print(y_test[:5])
+    print('Accuracy Score: ', accuracy_score(y_test, predictions))
+
+#########################
+
+########################
+# HELPER
+
+def reduce_cause_labels(df):
+    reduced_labels = ['Equipment Use', 'Children', 'Smoking', 'Campfire', 'Railroad', 'Structure', 'Powerline', 'Fireworks']
+    df = df.loc[df['stat_cause_descr'] != 'Missing/Undefined']
+    df['stat_cause_descr'] = df['stat_cause_descr'].apply(lambda x: 'Other' if (x in reduced_labels) else x)
+    return df
