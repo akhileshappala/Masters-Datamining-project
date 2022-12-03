@@ -1,3 +1,5 @@
 
 *.csv
 combined data set/regionDfObject.obj
+combined data set/.ipynb_checkpoints/combined-fire-area-feature-checkpoint.ipynb
+combined data set/.ipynb_checkpoints/combined-fire-area-prediction-without region-checkpoint.ipynb
