@@ -2,11 +2,11 @@ import pickle
 
 def getDF():
     # This pickle file is stored using pandas==1.4.1
-    picklefile = open('df_ByRegion.pkl', 'rb')
+    #picklefile = open('df_ByRegion.pkl', 'rb')
     #unpickle the dataframe
-    df = pickle.load(picklefile)
+    #df = pickle.load(picklefile)
     #close file
-    picklefile.close()
+    #picklefile.close()
 
     #main
     picklefile = open('df_ByRegion.pkl', 'rb')
