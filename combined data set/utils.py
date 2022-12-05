@@ -12,7 +12,7 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.svm import SVR
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score,recall_score, f1_score
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
@@ -64,7 +64,7 @@ def adj_R2(R2, n, p):
     return r2
 
 
-def run_all_classifiers(X_train, y_train, X_test, y_test):
+def run_all_classifiers(X_train, X_test, y_train, y_test):
     classifier_list = {
         "RandomForestClassifier": RandomForestClassifier(),
         "GradientBoostingClassifier": GradientBoostingClassifier(),
@@ -72,19 +72,28 @@ def run_all_classifiers(X_train, y_train, X_test, y_test):
         "ExtraTreesClassifier": ExtraTreesClassifier(),
         "SVC": SVC()
     }
-
+    classifier_dict={}
     for type in classifier_list.keys():
         print(f"Running {type}")
-        run_classifier(X_train, y_train, X_test, y_test, classifier_list[type])
+        result = run_classifier(X_train, X_test, y_train, y_test, classifier_list[type])
+        classifier_dict[type] = result
+    return classifier_dict
 
-def run_classifier(X_train, y_train, X_test, y_test, classifier_type):
+def run_classifier(X_train, X_test, y_train, y_test, classifier_type):
     model = classifier_type
     model.fit(X_train, y_train)
 
     predictions = model.predict(X_test)
     print(predictions[:5])
-    print(y_test[:5])
-    print('Accuracy Score: ', accuracy_score(y_test, predictions))
+    print(y_test.iloc[:5])
+    acc_score = accuracy_score(y_test, predictions)
+    #prec_score = precision_score(y_test, predictions, average="weighted")
+    sensitivity = recall_score(y_test, predictions, average="weighted")
+    f1 = f1_score(y_test, predictions, average="weighted")
+    print("Accuracy: ", acc_score)
+    print("Sensitivity: ", sensitivity)
+    print("F1 Score: ", f1)
+    return [acc_score,sensitivity,f1]
 
 #########################
 
