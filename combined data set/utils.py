@@ -12,9 +12,9 @@ from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.svm import SVR
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import r2_score
+from sklearn.metrics import accuracy_score, precision_score,recall_score, f1_score
 from sklearn.preprocessing import StandardScaler
 import pandas_profiling
 import seaborn as sns
@@ -72,20 +72,39 @@ def run_all_classifiers(X_train, y_train, X_test, y_test):
         "ExtraTreesClassifier": ExtraTreesClassifier(),
         "SVC": SVC()
     }
-
+    classifierDict = {}
     for type in classifier_list.keys():
         print(f"Running {type}")
-        run_classifier(X_train, y_train, X_test, y_test, classifier_list[type])
-
+        results = run_classifier(X_train, y_train, X_test, y_test, classifier_list[type])
+        classifierDict[type] = results
+    return classifierDict
 def run_classifier(X_train, y_train, X_test, y_test, classifier_type):
     model = classifier_type
     model.fit(X_train, y_train)
 
+    trainScore= model.score(X_train, y_train)
+    testScore = model.score(X_test, y_test)
     predictions = model.predict(X_test)
-    print(predictions[:5])
-    print(y_test[:5])
-    print('Accuracy Score: ', accuracy_score(y_test, predictions))
-
+        
+    #print(predictions[:5])
+    #print(y_test[:5])
+    #print(predictions)
+    acc = accuracy_score(y_test, predictions)
+    precision = precision_score(y_test, predictions, average="weighted")#,zero_division=0 #for warning when we do not predict all labels 
+    sensitivity= recall_score(y_test, predictions, average="weighted") #turning off warning
+    f1Score= f1_score(y_test, predictions, average="weighted")
+    print(f'Score on training data: {trainScore}')
+    print(f'Score on testing data: {testScore}') 
+    print("Accuracy: ", acc)
+    print("Precision: ",precision )
+    print("Sensitivity: ",sensitivity )
+    print("F1 Score: ", f1Score)
+    
+    
+    #acc = accuracy_score(y_test, predictions)
+   
+    #print('Accuracy Score: ', acc)
+    return [trainScore,testScore,acc, precision,sensitivity,f1Score]
 #########################
 
 ########################
