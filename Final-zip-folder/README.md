@@ -15,8 +15,13 @@ The overall flow, conclusions and key insights will give you an idea of how we a
 ### Source code and dataset
 - Data-set --> wildfire.csv
 - Source code --> We have separated the source code for better understanding into 2 parts,
-	- With-out regions file :- Will have all the pre-processing, Separation of experiments, Applying regression models to different experiments, classifiers alighned based on the dataset. For each step, you will find a comments for what it does and conclusions after that step executed.
-	- With regions file :  Will have all the pre-processing, separation of polygons, separation of region dataframes, Experiments with regression models based on region and other conclusions for the regions part.
+	- Prediction With-out regions file :- Will have all the pre-processing, Separation of experiments, Applying regression models to different experiments, classifiers alighned based on the dataset. For each step, you will find a comments for what it does and conclusions after that step executed.
+	- Prediction for regions file :  Will have all the pre-processing, separation of polygons, separation of region dataframes, Experiments with regression models based on region and other conclusions for the regions part.
+	- Regions :- Empty folder for generated regions images
+	- USmapByRegion : Empty folder for generated regions images
+	- utils.py :- common code functions used
+	- Wildfire.csv : dataset worked on 
+	- loadDFRegion.py : it auto populates region dataframes into a function.
 
 ### Results
  -  Analysis results -> Will have key insights from our starting analysis of the project.
